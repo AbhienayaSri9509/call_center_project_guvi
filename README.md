@@ -3,12 +3,27 @@
 ## Description
 This project implements the Track 3 Call Center Compliance specification. It handles synchronous API inference over incoming Base64-encoded MP3 audio, processing the audio iteratively through a pipeline consisting of a local Speech-to-Text inference followed by a robust NLP engine evaluation. It returns precise structured JSON mappings calculating the 5-stage SOP Adherence framework, business sentiment, payment categorization, and extracted keywords.
 
+## Live API
+
+https://call-center-project-guvi-3.onrender.com
+
 ## Tech Stack
 - **Language/Framework:** Python 3.10 with FastAPI (for robust, high-performance API endpoint construction)
 - **Key libraries:** `fastapi`, `uvicorn`, `openai-whisper`
 - **LLM/AI models used:** 
   - `Whisper (Base)`: Used locally for offline translation and text extraction of Hinglish/Tanglish formats.
   - `GPT-4o-mini`: Configured strictly for structured text auditing parsing through strict JSON Mode extraction.
+  - #  AI Tools 
+    - ChatGPT (development guidance)
+    - OpenAI GPT-4o-mini
+    - Whisper (speech recognition)
+ 
+## Features
+- Speech-to-Text conversion
+- SOP compliance validation
+- Sentiment detection
+- Payment classification
+- Keyword extraction
 
 ## Setup Instructions
 
@@ -37,6 +52,27 @@ This project implements the Track 3 Call Center Compliance specification. It han
    ```bash
    uvicorn src.main:app --host 0.0.0.0 --port 8000
    ```
+
+##  API Endpoint
+
+### POST `/api/call-analytics`
+
+#### Request Body
+```json
+{
+  "language": "en",
+  "audioFormat": "mp3",
+  "audioBase64": "BASE64_AUDIO_STRING"
+}
+
+{
+  "status": "success",
+  "transcript": "...",
+  "summary": "...",
+  "sop_validation": {},
+  "analytics": {}
+}
+
 
 ## Approach
 Our systematic methodology for executing zero-latency analysis without compromising data format stability:
