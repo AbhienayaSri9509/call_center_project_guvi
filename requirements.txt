@@ -3,4 +3,4 @@ uvicorn
 openai
 python-dotenv
 pydantic
-whisper
+openai-whisper
