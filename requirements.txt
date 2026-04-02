@@ -3,4 +3,4 @@ uvicorn
 openai
 python-dotenv
 pydantic
-openai-whisper
+git+https://github.com/openai/whisper.git
