@@ -27,25 +27,47 @@ https://call-center-project-guvi-3.onrender.com
 
 ## Architecture Overview
 
- Client (Postman / Judge System)
- 
-        ↓
- FastAPI Endpoint (/api/call-analytics)
- 
-        ↓
- Base64 Decoder → Temp Audio File
- 
-        ↓
- Whisper (Speech-to-Text)
- 
-        ↓
- GPT-4o-mini (NLP Analysis)
- 
-        ↓
- Rule-based Validator (SOP + Analytics)
- 
-        ↓
- Structured JSON Response
+The system follows a modular AI pipeline architecture designed for real-time call analysis:
+
+1. **Client Input Layer**
+   - User sends a POST request with Base64-encoded MP3 audio.
+   - Includes metadata such as language and audio format.
+
+2. **API Layer (FastAPI)**
+   - Handles incoming requests.
+   - Validates API key and request format using Pydantic models.
+   - Routes data to processing pipeline.
+
+3. **Audio Processing Layer**
+   - Base64 audio is decoded and stored temporarily.
+   - File is prepared for transcription.
+
+4. **Speech-to-Text Layer (Whisper)**
+   - Whisper model converts audio into text.
+   - Supports Hinglish and Tanglish speech patterns.
+
+5. **NLP Analysis Layer (GPT)**
+   - Transcribed text is sent to GPT-4o-mini.
+   - Performs:
+     - Call summarization
+     - SOP compliance validation
+     - Sentiment detection
+     - Payment classification
+     - Keyword extraction
+
+6. **Response Generation Layer**
+   - Results are structured into a predefined JSON schema.
+   - Ensures consistent output format for evaluation.
+
+7. **Output Layer**
+   - Final JSON response is returned to the client.
+   - Includes transcript, summary, SOP metrics, analytics, and keywords.
+
+---
+
+## Data Flow
+
+Client → FastAPI → Audio Decode → Whisper → GPT → JSON Response → Client
  
 
 ## Setup Instructions
