@@ -21,7 +21,13 @@ client = OpenAI(api_key=OPENAI_API_KEY) if OPENAI_API_KEY else None
 
 # ✅ Load lightweight Whisper model (important for Render memory)
 print("Loading Whisper model...")
-model = whisper.load_model("tiny")
+model = None
+
+def get_model():
+    global model
+    if model is None:
+        model = whisper.load_model("tiny", device="cpu")
+    return model
 print("Whisper model loaded.")
 
 # FastAPI app
@@ -113,7 +119,7 @@ def analyze_call(req_body: CallAnalyticsRequest, x_api_key: str = Header(None)):
             temp_audio_path = temp_audio.name
 
         # 🎙️ Transcribe
-        result = model.transcribe(temp_audio_path)
+        result = get_model().transcribe(temp_audio_path)
         transcript = result["text"].strip()
 
         if not transcript:
