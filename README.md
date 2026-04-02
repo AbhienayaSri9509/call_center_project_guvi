@@ -128,5 +128,5 @@ Our systematic methodology for executing zero-latency analysis without compromis
 3. **Structured NLP JSON Alignment:** We leverage OpenAI's explicit JSON_MODE and provide the exact requested mathematical mapping for the 1.0 SOP scale metrics natively. If an LLM evaluation timeout occurs or API limits emerge, custom fallback algorithms securely inject exact-format template objects directly aligned with `NOT_FOLLOWED` states to maintain HTTP 200 stability and partial scores securely during evaluation intervals.
 
 
-## DEMO LINK: https://youtu.be/bU4bteczkyc?si=loCqdOQOKuvnbqnl
+#### DEMO LINK: https://youtu.be/fs_0T23HJpc?si=3_qAGGVxMr72hxsZ
 
