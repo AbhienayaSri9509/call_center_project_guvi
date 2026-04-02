@@ -2,7 +2,6 @@ import os
 import base64
 import tempfile
 import json
-import whisper   # ✅ correct import
 
 from fastapi import FastAPI, Header, HTTPException
 from fastapi.responses import JSONResponse
@@ -10,27 +9,16 @@ from pydantic import BaseModel, ConfigDict
 from openai import OpenAI
 from dotenv import load_dotenv
 
-# Load env variables
+# Load env
 load_dotenv()
 
-# API Keys
+# Keys
 API_KEY = os.getenv("API_KEY", "sk_track3_987654321")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
-client = OpenAI(api_key=OPENAI_API_KEY) if OPENAI_API_KEY else None
+client = OpenAI(api_key=OPENAI_API_KEY)
 
-# ✅ Load lightweight Whisper model (important for Render memory)
-print("Loading Whisper model...")
-model = None
-
-def get_model():
-    global model
-    if model is None:
-        model = whisper.load_model("tiny", device="cpu")
-    return model
-print("Whisper model loaded.")
-
-# FastAPI app
+# App
 app = FastAPI(title="Call Center Compliance API")
 
 
@@ -42,45 +30,38 @@ class CallAnalyticsRequest(BaseModel):
     audioBase64: str
 
 
-# GPT Analysis
+# 🎙️ TRANSCRIPTION USING OPENAI (NO WHISPER)
+def transcribe_audio(file_path):
+    with open(file_path, "rb") as audio_file:
+        transcript = client.audio.transcriptions.create(
+            model="gpt-4o-mini-transcribe",
+            file=audio_file
+        )
+    return transcript.text
+
+
+# 🤖 GPT Analysis
 def analyze_with_gpt(transcript: str) -> dict:
-    if not client:
-        return {}
-
-    prompt = f"""
-    Analyze the following call center transcript and extract business intelligence and compliance metrics.
-
-    Transcript:
-    "{transcript}"
-
-    Return ONLY a valid JSON object matching EXACTLY this structure:
-    {{
-      "summary": "",
-      "sop_validation": {{
-        "greeting": false,
-        "identification": false,
-        "problemStatement": false,
-        "solutionOffering": false,
-        "closing": false,
-        "complianceScore": 0.0,
-        "adherenceStatus": "",
-        "explanation": ""
-      }},
-      "analytics": {{
-        "paymentPreference": "",
-        "rejectionReason": "",
-        "sentiment": ""
-      }},
-      "keywords": []
-    }}
-    """
-
     try:
         response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[
-                {"role": "system", "content": "You are a strict call center compliance AI."},
-                {"role": "user", "content": prompt}
+                {
+                    "role": "system",
+                    "content": "You are a strict call center compliance AI."
+                },
+                {
+                    "role": "user",
+                    "content": f"""
+Analyze the following call center transcript and extract business intelligence.
+
+Transcript:
+{transcript}
+
+Return JSON with:
+summary, sop_validation, analytics, keywords
+"""
+                }
             ],
             response_format={"type": "json_object"}
         )
@@ -92,15 +73,13 @@ def analyze_with_gpt(transcript: str) -> dict:
         return {}
 
 
-# API Endpoint
+# 🚀 API
 @app.post("/api/call-analytics")
 def analyze_call(req_body: CallAnalyticsRequest, x_api_key: str = Header(None)):
 
-    # Auth check
     if not x_api_key or x_api_key != API_KEY:
         raise HTTPException(status_code=401, detail="Unauthorized")
 
-    # Validate format
     if req_body.audioFormat.lower() != "mp3":
         return JSONResponse(status_code=400, content={
             "status": "error",
@@ -110,49 +89,31 @@ def analyze_call(req_body: CallAnalyticsRequest, x_api_key: str = Header(None)):
     temp_audio_path = None
 
     try:
-        # Decode base64
+        # decode audio
         audio_data = base64.b64decode(req_body.audioBase64)
 
-        # Save temp file
         with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as temp_audio:
             temp_audio.write(audio_data)
             temp_audio_path = temp_audio.name
 
-        # 🎙️ Transcribe
-        result = get_model().transcribe(temp_audio_path)
-        transcript = result["text"].strip()
+        # 🎙️ TRANSCRIBE (API)
+        transcript = transcribe_audio(temp_audio_path)
 
         if not transcript:
             raise Exception("Transcript empty")
 
-        # 🤖 AI Analysis
+        # 🤖 ANALYSIS
         analysis = analyze_with_gpt(transcript)
 
-        # Final response
-        final_response = {
+        return {
             "status": "success",
             "language": req_body.language,
             "transcript": transcript,
-            "summary": analysis.get("summary", "AI skipped"),
-            "sop_validation": analysis.get("sop_validation", {
-                "greeting": False,
-                "identification": False,
-                "problemStatement": False,
-                "solutionOffering": False,
-                "closing": False,
-                "complianceScore": 0.0,
-                "adherenceStatus": "NOT_FOLLOWED",
-                "explanation": "Fallback response"
-            }),
-            "analytics": analysis.get("analytics", {
-                "paymentPreference": "DOWN_PAYMENT",
-                "rejectionReason": "NONE",
-                "sentiment": "Neutral"
-            }),
+            "summary": analysis.get("summary", ""),
+            "sop_validation": analysis.get("sop_validation", {}),
+            "analytics": analysis.get("analytics", {}),
             "keywords": analysis.get("keywords", ["Agent", "Customer"])
         }
-
-        return final_response
 
     except Exception as e:
         return JSONResponse(status_code=400, content={
