@@ -13,7 +13,7 @@ https://call-center-project-guvi-3.onrender.com
 - **LLM/AI models used:** 
   - `Whisper (Base)`: Used locally for offline translation and text extraction of Hinglish/Tanglish formats.
   - `GPT-4o-mini`: Configured strictly for structured text auditing parsing through strict JSON Mode extraction.
-  - ##AI Tools 
+  - ## AI Tools 
     - ChatGPT (development guidance)
     - OpenAI GPT-4o-mini
     - Whisper (speech recognition)
