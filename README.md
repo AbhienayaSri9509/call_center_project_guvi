@@ -28,16 +28,22 @@ https://call-center-project-guvi-3.onrender.com
 ## Architecture Overview
 
  Client (Postman / Judge System)
+ 
         ↓
  FastAPI Endpoint (/api/call-analytics)
+ 
         ↓
  Base64 Decoder → Temp Audio File
+ 
         ↓
  Whisper (Speech-to-Text)
+ 
         ↓
  GPT-4o-mini (NLP Analysis)
+ 
         ↓
  Rule-based Validator (SOP + Analytics)
+ 
         ↓
  Structured JSON Response
  
