@@ -127,3 +127,6 @@ Our systematic methodology for executing zero-latency analysis without compromis
 2. **Offline Audio Ingestion Algorithm:** We enforce `whisper.load_model("base")` instantly onto server startup to eliminate cold starts. We use default local processing for Tanglish extraction since Whisper natively translates sub-continental English hybrids dynamically without heavy pre-tuning.
 3. **Structured NLP JSON Alignment:** We leverage OpenAI's explicit JSON_MODE and provide the exact requested mathematical mapping for the 1.0 SOP scale metrics natively. If an LLM evaluation timeout occurs or API limits emerge, custom fallback algorithms securely inject exact-format template objects directly aligned with `NOT_FOLLOWED` states to maintain HTTP 200 stability and partial scores securely during evaluation intervals.
 
+
+## DEMO LINK: https://youtu.be/bU4bteczkyc?si=loCqdOQOKuvnbqnl
+
