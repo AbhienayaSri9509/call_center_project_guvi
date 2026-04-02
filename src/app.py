@@ -16,7 +16,7 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 client = OpenAI(api_key=OPENAI_API_KEY) if OPENAI_API_KEY else None
 print("Loading Whisper model...")
-model = whisper.load_model("base")
+model = whisper.load_model("tiny")
 print("Whisper model loaded.")
 
 app = FastAPI(title="Call Center Compliance API")
