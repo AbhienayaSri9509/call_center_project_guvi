@@ -1,0 +1,34 @@
+remote: error: GH013: Repository rule violations found for refs/heads/main.        
+remote: 
+remote: - GITHUB PUSH PROTECTION        
+remote:   ΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇö        
+remote:     Resolve the following violations before pushing again        
+remote: 
+remote:     - Push cannot contain secrets        
+remote: 
+remote:             
+remote:      (?) Learn how to resolve a blocked push        
+remote:      https://docs.github.com/code-security/secret-scanning/working-with-secret-scanning-and-push-protection/working-with-push-protection-from-the-command-line#resolving-a-blocked-push        
+remote:             
+remote:             
+remote:       ΓÇöΓÇö OpenAI API Key ΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇö        
+remote:        locations:        
+remote:          - commit: 273e4916b732b2bb09c70b3a2a9485f7077bd612        
+remote:            path: backend/.gitignore:1        
+remote:          - commit: 227f50994c2248cbb0993d8862d1629e256da7e0        
+remote:            path: backend/__pycache__/main.cpython-311.pyc:4        
+remote:          - commit: 227f50994c2248cbb0993d8862d1629e256da7e0        
+remote:            path: backend/main.py:24        
+remote:          - commit: 227f50994c2248cbb0993d8862d1629e256da7e0        
+remote:            path: backend/main.py:182        
+remote:          - commit: 273e4916b732b2bb09c70b3a2a9485f7077bd612        
+remote:            path: backend/main.py:182        
+remote:             
+remote:        (?) To push, remove secret from commit(s) or follow this URL to allow the secret.        
+remote:        https://github.com/AbhienayaSri9509/call_center_project_guvi/security/secret-scanning/unblock-secret/3BmlbB7W5o1K9oQqg5YyWgxIRYk        
+remote:             
+remote: 
+remote: 
+To https://github.com/AbhienayaSri9509/call_center_project_guvi.git
+ ! [remote rejected] main -> main (push declined due to repository rule violations)
+error: failed to push some refs to 'https://github.com/AbhienayaSri9509/call_center_project_guvi.git'
