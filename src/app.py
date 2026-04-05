@@ -29,7 +29,7 @@ class CallAnalyticsRequest(BaseModel):
     audioBase64: str
 
 
-# ✅ GPT Analysis (CORRECT VERSION)
+
 def analyze_with_gpt(transcript: str) -> dict:
     try:
         response = openai.ChatCompletion.create(
@@ -98,7 +98,7 @@ def analyze_call(req_body: CallAnalyticsRequest, x_api_key: str = Header(None)):
             temp_audio.write(audio_data)
             temp_audio_path = temp_audio.name
 
-        # ✅ Dummy transcript (no whisper → no crash)
+    
         transcript = "Customer asked for EMI extension and discussed repayment options."
 
         # GPT analysis
