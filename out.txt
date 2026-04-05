@@ -1,0 +1,124 @@
+CALL CENTER ANALYTICS SYSTEM – ARCHITECTURE & FLOW
+
+--------------------------------------------------
+
+1. INPUT
+-------
+- Audio URL (Hindi / Tamil call recording)
+- Example:
+  https://recordings.exotel.com/exotelrecordings/guvi64/sample.mp3
+
+--------------------------------------------------
+
+2. BACKEND API
+--------------
+Endpoint:
+POST /api/call-analytics
+
+Headers:
+x-api-key: guvi123
+
+Query Param:
+audio_url: <audio file link>
+
+--------------------------------------------------
+
+3. PROCESS FLOW
+---------------
+
+Step 1: Audio Download
+- The system downloads audio from the given URL using requests
+
+Step 2: Speech-to-Text
+- OpenAI Whisper model converts audio → text
+- Supports Hinglish & Tanglish
+
+Step 3: AI Processing (GPT)
+- Transcript is sent to GPT model
+- Extracts:
+  - Summary
+  - SOP Compliance
+  - Payment Category
+  - Rejection Reasons
+  - Keywords
+
+--------------------------------------------------
+
+4. FEATURES IMPLEMENTED
+----------------------
+
+✔ Voice-to-Text Processing
+✔ AI-Based Text Summarization
+✔ SOP Validation (Greeting & Closing detection)
+✔ Payment Categorization:
+    - EMI
+    - Full Payment
+    - Partial Payment
+    - Down Payment
+✔ Rejection Analysis
+✔ Keyword Extraction
+
+--------------------------------------------------
+
+5. OUTPUT FORMAT (JSON)
+----------------------
+
+{
+  "transcript": "...",
+  "summary": "...",
+  "sop_compliance": {
+    "greeting": true,
+    "closing": false
+  },
+  "payment_category": {
+    "EMI": 1,
+    "Full Payment": 0,
+    "Partial Payment": 1,
+    "Down Payment": 0
+  },
+  "rejection_reasons": [
+    "not interested",
+    "call later"
+  ],
+  "keywords": [
+    "loan",
+    "EMI",
+    "payment"
+  ]
+}
+
+--------------------------------------------------
+
+6. TECH STACK
+-------------
+
+- Backend: FastAPI
+- Speech-to-Text: OpenAI Whisper
+- AI Analysis: GPT (OpenAI)
+- Frontend: HTML + JavaScript
+- Deployment: Render
+
+--------------------------------------------------
+
+7. DEPLOYED API
+---------------
+
+Base URL:
+https://call-center-project-guvi.onrender.com
+
+Endpoint:
+https://call-center-project-guvi.onrender.com/api/call-analytics
+
+--------------------------------------------------
+
+8. TESTING
+----------
+
+Use Swagger UI:
+/docs
+
+Or GUVI Endpoint Tester with:
+- Endpoint URL
+- x-api-key header
+
+--------------------------------------------------
