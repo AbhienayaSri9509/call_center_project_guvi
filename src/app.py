@@ -67,7 +67,7 @@ def analyze_with_gpt(transcript: str) -> dict:
         return {}
 
 
-# 🚀 API Endpoint
+# API Endpoint
 @app.get("/")
 def home():
     return {"message": "API is running ✅"}
